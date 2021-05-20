@@ -7,7 +7,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-  entry: ['./src/App.js'],
+  entry: ["./src/App.js"],
   module: {
     rules: [
       {
@@ -15,18 +15,24 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'].map(require.resolve),
+              presets: ["@babel/preset-env", "@babel/preset-react"].map(
+                require.resolve
+              ),
             },
           },
         ],
       },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   output: {
-    path: path.join(__dirname, '/public/webpack/'),
-    filename: 'bundle.js',
+    path: path.join(__dirname, "/public/webpack/"),
+    filename: "bundle.js",
   },
-  plugins: [htmlPlugin]
+  plugins: [htmlPlugin],
 };
