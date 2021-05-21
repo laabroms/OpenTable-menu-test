@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import menuJSON from "../../menu-data.json";
 import MenuItem from "./MenuItem";
+import CustomerMenu from './CustomerMenu';
+
 const MenuList = () => {
   const [user1Cart, setUser1Cart] = useState([]);
   const [user2Cart, setUser2Cart] = useState([]);
@@ -8,10 +10,12 @@ const MenuList = () => {
   const [error2, setError2] = useState("");
   const [sumTotal, setSumTotal] = useState(0);
 
-  let starters = [1, 2, 3, 4];
-  let mains = [5, 6, 7, 8];
-  let desserts = [9, 10, 11, 12];
+  let sections = Object.keys(menuJSON)
+  let starters = Object.keys(menuJSON.starters).map((i) => Number(i));
+  let mains = Object.keys(menuJSON.mains).map((i) => Number(i));
+  let desserts = Object.keys(menuJSON.desserts).map((i) => Number(i));
 
+  console.log(starters)
   useEffect(() => {
 
     let allItems = user1Cart.concat(user2Cart);
@@ -19,6 +23,7 @@ const MenuList = () => {
 
     for (let x = 0; x < allItems.length; x++) {
       if (starters.some((e) => e === allItems[x])) {
+        console.log(menuJSON.starters[allItems[x] - 1]);
         total += menuJSON.starters[allItems[x] - 1].price;
       } else if (mains.some((e) => e === allItems[x])) {
         total += menuJSON.mains[allItems[x] - 5].price;
@@ -30,16 +35,20 @@ const MenuList = () => {
   }, [user1Cart, user2Cart]);
 
   const handleAddToCart1 = (id) => {
+
+    //makes array copy
     let currentCart = [...user1Cart];
 
-
+    // loops through cart ids
     for (let i = 0; i < currentCart.length; i++) {
         
-        //checks if there isnt a main yet and there is already an item in the cart
+        //checks if there isnt a main yet and there is already an item in the cart and current item isnt a main
         if ((!mains.some((e) => e === currentCart[i]) && currentCart.length === 1 && !mains.includes(id))) {
             setError1('You must select a main course.');
             return;
-        } else if ((currentCart.includes(4) && id === 7) || (currentCart.includes(7) && id === 4)) {
+        } 
+        // if user tries to add both prawn cocktail and salmon fillet
+        else if ((currentCart.includes(4) && id === 7) || (currentCart.includes(7) && id === 4)) {
             setError1(
               "You cannot get the prawn cocktail and the salmon fillet."
             );
@@ -50,6 +59,7 @@ const MenuList = () => {
         }
 
     } 
+    // adds id to current cart, removes error, sets cart to new cart
     currentCart.push(id);
     setError1('');
     setUser1Cart(currentCart);
@@ -89,6 +99,7 @@ const MenuList = () => {
           justifyContent: "space-around",
         }}
       >
+      <CustomerMenu />
         <div>
           <h1 style={{ textAlign: "center" }}>User 1 Menu</h1>
 

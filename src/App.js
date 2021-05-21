@@ -1,12 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-import MenuList from './components/MenuList';
+
+import Menus from './components/Menus';
 
 class App extends React.Component {
+    
     render() {
+        
         return (
-            <MenuList />
-            );
+          // <MenuList />
+          <Menus />
+        );
     }
 }
 

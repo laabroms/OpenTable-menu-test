@@ -1,19 +1,20 @@
 import React from "react";
 
 const MenuItem = (props) => {
-    
+
+  const row = {
+    marginBottom: "10px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  };
+
   
 
   return (
     <div style={props.style}>
       <div
-        style={{
-          marginBottom: "10px",
-          display: "flex",
-          flexDirection: "row",
-          width: "400px",
-          justifyContent: "space-between",
-        }}
+        style={row}
       >
         <div style={{ width: "140px" }}>{props.name}</div>
         <div style={{ width: "50px", textAlign: "end" }}>
