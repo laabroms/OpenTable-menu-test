@@ -9,14 +9,12 @@ const Menus = () => {
   const [total2, setTotal2] = useState(0);
   const [sumTotal, setSumTotal] = useState(0);
 
-  
-  
   const handleCart1 = (cart, total) => {
     if (cart.includes(11)) {
       setNoCheesecake(true);
     }
     setCart1(cart);
-    setTotal1(total)
+    setTotal1(total);
   };
   const handleCart2 = (cart, total) => {
     if (cart.includes(11)) {
@@ -27,11 +25,8 @@ const Menus = () => {
   };
 
   useEffect(() => {
-    if (total1 || total2) {
-      setSumTotal(total1+total2)
-    }
-  }, [total1, total2])
-
+    setSumTotal(total1 + total2);
+  }, [total1, total2]);
 
   const center = {
     display: "flex",

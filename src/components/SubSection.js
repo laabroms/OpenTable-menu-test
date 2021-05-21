@@ -39,6 +39,8 @@ const SubSection = (props) => {
                 }
                 style={cart.includes(item.id) ? { color: "green" } : null}
                 cart={cart}
+                id={item.id}
+                remove={() => props.onRemove(item.id)}
               />
             ))}
           </div>

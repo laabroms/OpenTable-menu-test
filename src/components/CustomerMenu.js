@@ -13,17 +13,16 @@ const CustomerMenu = (props) => {
   useEffect(() => {
     if (menuJSON) {
       setMenu(menuJSON);
-      let start = []
+      let start = [];
       Object.values(menuJSON.starters).forEach((num) => start.push(num.id));
       setStarters(start);
-      let main = []
+      let main = [];
       Object.values(menuJSON.mains).forEach((num) => main.push(num.id));
-      setMains(main)
-      let dessert = []
+      setMains(main);
+      let dessert = [];
       Object.values(menuJSON.desserts).forEach((num) => dessert.push(num.id));
       setDesserts(dessert);
     }
-    
   }, [menuJSON]);
 
   const container = {
@@ -33,53 +32,75 @@ const CustomerMenu = (props) => {
     minWidth: "23rem",
     width: "30rem",
     boxShadow: "0 1rem 3rem rgba(54, 54, 58, 0.2)",
-    margin: '1rem'
+    margin: "1rem",
   };
 
   const addToCartHandler = (id) => {
     let currentCart = [...customerCart];
 
-   
     // loops through cart ids
     //checks no mains && item in cart
-    if (currentCart.length === 1 && !mains.includes(currentCart[0]) && !mains.includes(id)) {
+    if (
+      currentCart.length === 1 &&
+      !mains.includes(currentCart[0]) &&
+      !mains.includes(id)
+    ) {
       setError("You must select a main course.");
       return;
     } else if (
       (id === 4 && currentCart.includes(7)) ||
-      (id === 7 && currentCart.includes(4)))
-    {
-        setError("You cannot get prawn cocktail and salmon fillet.");
-        return;
-    } 
-    else {
+      (id === 7 && currentCart.includes(4))
+    ) {
+      setError("You cannot get prawn cocktail and salmon fillet.");
+      return;
+    } else {
       currentCart.push(id);
       setError("");
       setCustomerCart(currentCart);
 
-      let total = 0;
-      for (let x = 0; x < currentCart.length; x++) {
-          if (starters.includes(currentCart[x])) {
-            let item = Object.values(menuJSON.starters.filter((e) => e.id === currentCart[x]));
-            total += item[0].price;
-          } else if (mains.includes(currentCart[x])) {
-              let item = Object.values(
-                menuJSON.mains.filter((e) => e.id === currentCart[x])
-              );
-              total += item[0].price;
-          } else {
-              let item = Object.values(
-                menuJSON.desserts.filter((e) => e.id === currentCart[x])
-              );
-              total += item[0].price;
-          }
-      }
-      props.sendCart(currentCart, total);
-    } 
+      let total = getTotal(currentCart);
 
+      props.sendCart(currentCart, total);
+    }
   };
 
-  
+  const getTotal = (currentCart) => {
+    let total = 0;
+    for (let x = 0; x < currentCart.length; x++) {
+      if (starters.includes(currentCart[x])) {
+        let item = Object.values(
+          menuJSON.starters.filter((e) => e.id === currentCart[x])
+        );
+        total += item[0].price;
+      } else if (mains.includes(currentCart[x])) {
+        let item = Object.values(
+          menuJSON.mains.filter((e) => e.id === currentCart[x])
+        );
+        total += item[0].price;
+      } else {
+        let item = Object.values(
+          menuJSON.desserts.filter((e) => e.id === currentCart[x])
+        );
+        total += item[0].price;
+      }
+    }
+    return total;
+  };
+
+  const removeFromCartHandler = (id) => {
+    let currentCart = [...customerCart];
+
+    let index = currentCart.indexOf(id);
+    if (index >= 0) {
+      currentCart.splice(index, 1);
+    }
+
+    let total = getTotal(currentCart);
+    console.log(total)
+    setCustomerCart(currentCart);
+
+    props.sendCart(currentCart, total);
+  };
 
   return (
     <div style={container}>
@@ -92,6 +113,7 @@ const CustomerMenu = (props) => {
             data={subsection}
             subsectionTitle={Object.keys(menu)[index]}
             onItemClick={addToCartHandler}
+            onRemove={removeFromCartHandler}
             cart={customerCart}
             noCheesecake={props.noCheesecake}
           />
