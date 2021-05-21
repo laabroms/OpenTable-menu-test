@@ -27,7 +27,7 @@ const SubSection = (props) => {
       {data && data.length > 0 ? (
         <div style={{ width: "100%" }}>
           <div>
-            <h2>{subsectionTitle}</h2>
+            <h2>{subsectionTitle.charAt(0).toUpperCase() + subsectionTitle.slice(1)}</h2>
           </div>
           <div>
             {data.map((item) => (
@@ -35,7 +35,9 @@ const SubSection = (props) => {
                 name={item.name}
                 price={item.price}
                 onClick={() => props.onItemClick(item.id)}
-                disabled={data.filter((value) => cart.includes(value.id)).length > 0 || (item.id === 11 && props.noCheesecake)
+                disabled={
+                  data.filter((value) => cart.includes(value.id)).length > 0 ||
+                  (item.id === 11 && props.noCheesecake)
                 }
                 style={cart.includes(item.id) ? { color: "green" } : null}
                 cart={cart}

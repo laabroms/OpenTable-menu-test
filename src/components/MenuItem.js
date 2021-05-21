@@ -12,7 +12,7 @@ const MenuItem = (props) => {
   const button = {
     width: '100px',
     borderRadius: '3px',
-    border: '0.1rem solid black',
+    border: '0.1rem solid #333333',
 
   }
 
